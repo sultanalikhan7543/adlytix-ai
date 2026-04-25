@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Adlytix AI — Instant AI Marketing Analytics</title>
+    <meta name="description" content="Upload your ad data. Get instant ROI, ROAS, CPC, CTR metrics + AI-powered insights. Free. No signup required."/>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+
+    <style>
+        /* ── Reset ───────────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --dark: #1a202c;
+            --gray: #718096;
+            --light: #f7fafc;
+            --white: #ffffff;
+            --success: #48bb78;
+            --warning: #f6ad55;
+            --danger: #fc5c65;
+            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--dark);
+            background: var(--white);
+            line-height: 1.6;
+        }
+
+        /* ── Utility ─────────────────────────────────────────── */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 20px rgba(102,126,234,0.45);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(102,126,234,0.55);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(102,126,234,0.1);
+            color: var(--primary);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        /* ── Navbar ──────────────────────────────────────────── */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #e2e8f0;
+            z-index: 100;
+            padding: 16px 0;
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-brand {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+
+        .nav-cta {
+            padding: 10px 24px;
+            font-size: 0.9rem;
+        }
+
+        /* ── Hero ────────────────────────────────────────────── */
+        #hero {
+            padding: 140px 0 100px;
+            text-align: center;
+            background: linear-gradient(180deg, #f0f4ff 0%, #ffffff 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle,
+                rgba(102,126,234,0.12) 0%,
+                transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-title {
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            font-weight: 900;
+            line-height: 1.15;
+            color: var(--dark);
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .hero-title .highlight {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.15rem;
+            color: var(--gray);
+            max-width: 580px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 56px;
+        }
+
+        .hero-proof {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            color: var(--gray);
+            font-size: 0.88rem;
+        }
+
+        .proof-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .proof-item span { color: var(--success); font-size: 1rem; }
+
+        /* ── Dashboard Preview ───────────────────────────────── */
+        .dashboard-preview {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.12);
+            padding: 24px;
+            max-width: 860px;
+            margin: 60px auto 0;
+            border: 1px solid #e2e8f0;
+        }
+
+        .preview-bar {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+
+        .preview-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .preview-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .preview-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 16px 12px;
+            text-align: center;
+            border-top: 3px solid var(--primary);
+        }
+
+        .preview-card.green { border-top-color: var(--success); }
+        .preview-card.orange { border-top-color: var(--warning); }
+        .preview-card.red { border-top-color: var(--danger); }
+
+        .preview-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .preview-label {
+            font-size: 0.72rem;
+            color: var(--gray);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 4px;
+        }
+
+        .preview-insight {
+            background: var(--gradient);
+            border-radius: 12px;
+            padding: 20px;
+            color: white;
+            font-size: 0.88rem;
+            line-height: 1.7;
+            text-align: left;
+        }
+
+        .preview-insight strong { display: block; margin-bottom: 8px; font-size: 0.95rem; }
+
+        /* ── Problem Section ─────────────────────────────────── */
+        #problem {
+            padding: 100px 0;
+            background: var(--dark);
+            color: white;
+        }
+
+        #problem .section-label { color: var(--danger); background: rgba(252,92,101,0.15); }
+
+        .section-title {
+            font-size: clamp(1.8rem, 3vw, 2.6rem);
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+
+        .section-subtitle {
+            font-size: 1.05rem;
+            color: var(--gray);
+            max-width: 560px;
+            margin-bottom: 56px;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .problem-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .problem-icon {
+            font-size: 2rem;
+            margin-bottom: 16px;
+        }
+
+        .problem-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .problem-card p {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.65);
+            line-height: 1.7;
+        }
+
+        /* ── Solution / How It Works ─────────────────────────── */
+        #solution {
+            padding: 100px 0;
+            background: var(--light);
+        }
+
+        #solution .section-label {
+            color: var(--success);
+            background: rgba(72,187,120,0.12);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 32px;
+            margin-top: 56px;
+        }
+
+        .step-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            position: relative;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gradient);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .step-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .step-card p {
+            font-size: 0.88rem;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        .step-icon { font-size: 2rem; margin-bottom: 16px; }
+
+        /* ── Features ────────────────────────────────────────── */
+        #features {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 28px;
+            margin-top: 56px;
+        }
+
+        .feature-card {
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 28px;
+            transition: all 0.2s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 30px rgba(102,126,234,0.12);
+            transform: translateY(-3px);
+        }
+
+        .feature-icon {
+            font-size: 2.2rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .feature-card p {
+            font-size: 0.88rem;
+            color: var(--gray);
+            line-height: 1.7;
+        }
+
+        /* ── Social Proof ────────────────────────────────────── */
+        #proof {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        #proof .section-subtitle { color: rgba(255,255,255,0.8); }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 32px;
+            margin: 56px 0;
+        }
+
+        .stat-item { text-align: center; }
+
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.75);
+            font-weight: 500;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .testimonial {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: left;
+        }
+
+        .testimonial-text {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 20px;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .author-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .author-name {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+        }
+
+        .author-title {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.65);
+        }
+
+        /* ── Final CTA ───────────────────────────────────────── */
+        #cta {
+            padding: 100px 0;
+            background: var(--light);
+            text-align: center;
+        }
+
+        .cta-box {
+            background: white;
+            border-radius: 24px;
+            padding: 64px 40px;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+            max-width: 680px;
+            margin: 0 auto;
+            border: 1px solid #e2e8f0;
+        }
+
+        .cta-box .section-title { font-size: 2.2rem; }
+
+        .cta-subtitle {
+            font-size: 1rem;
+            color: var(--gray);
+            margin: 16px 0 36px;
+            line-height: 1.7;
+        }
+
+        .cta-features {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 28px;
+        }
+
+        .cta-feature {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.88rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .cta-feature span { color: var(--success); }
+
+        /* ── Footer ──────────────────────────────────────────── */
+        footer {
+            background: var(--dark);
+            color: rgba(255,255,255,0.6);
+            padding: 40px 0;
+            text-align: center;
+            font-size: 0.88rem;
+        }
+
+        footer a {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+        }
+
+        footer a:hover { color: white; }
+
+        .footer-brand {
+            font-size: 1.2rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        /* ── Responsive ──────────────────────────────────────── */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .preview-metrics { grid-template-columns: repeat(2, 1fr); }
+            .hero-cta-group { flex-direction: column; align-items: center; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ── NAVBAR ──────────────────────────────────────────────────────────── -->
+<nav>
+    <div class="container">
+        <div class="nav-inner">
+            <a href="#" class="nav-brand">📊 Adlytix AI</a>
+            <ul class="nav-links">
+                <li><a href="#problem">Problem</a></li>
+                <li><a href="#solution">How It Works</a></li>
+                <li><a href="#features">Features</a></li>
+            </ul>
+            <a href="https://adlytix-ai.streamlit.app"
+               target="_blank"
+               class="btn btn-primary nav-cta">
+                Try Free →
+            </a>
+        </div>
+    </div>
+</nav>
+
+
+<!-- ── HERO ────────────────────────────────────────────────────────────── -->
+<section id="hero">
+    <div class="container">
+        <div class="badge">🚀 Free During Beta — No Signup Required</div>
+
+        <h1 class="hero-title">
+            Your Ad Data Has Answers.<br>
+            <span class="highlight">We Make Them Obvious.</span>
+        </h1>
+
+        <p class="hero-subtitle">
+            Upload your Google Ads, Meta, or TikTok export.
+            Get instant ROI, ROAS, CPC & CTR metrics —
+            plus plain-English AI insights in under 10 seconds.
+        </p>
+
+        <div class="hero-cta-group">
+            <a href="https://adlytix-ai.streamlit.app"
+               target="_blank"
+               class="btn btn-primary">
+                📊 Analyze My Ads — It's Free
+            </a>
+            <a href="#solution" class="btn btn-outline">
+                See How It Works
+            </a>
+        </div>
+
+        <div class="hero-proof">
+            <div class="proof-item">
+                <span>✅</span> No signup required
+            </div>
+            <div class="proof-item">
+                <span>✅</span> Works with any CSV or Excel
+            </div>
+            <div class="proof-item">
+                <span>✅</span> Results in under 10 seconds
+            </div>
+            <div class="proof-item">
+                <span>✅</span> 100% Free
+            </div>
+        </div>
+
+        <!-- Dashboard Preview Mockup -->
+        <div class="dashboard-preview">
+            <div class="preview-bar">
+                <div class="preview-dot" style="background:#fc5c65"></div>
+                <div class="preview-dot" style="background:#f6ad55"></div>
+                <div class="preview-dot" style="background:#48bb78"></div>
+                <span style="margin-left:8px; font-size:0.8rem;
+                             color:#a0aec0;">adlytix-ai.streamlit.app</span>
+            </div>
+            <div class="preview-metrics">
+                <div class="preview-card">
+                    <div class="preview-value">$1,900</div>
+                    <div class="preview-label">Total Spend</div>
+                </div>
+                <div class="preview-card green">
+                    <div class="preview-value">$7,700</div>
+                    <div class="preview-label">Total Revenue</div>
+                </div>
+                <div class="preview-card green">
+                    <div class="preview-value">4.1x</div>
+                    <div class="preview-label">Avg ROAS ✅</div>
+                </div>
+                <div class="preview-card green">
+                    <div class="preview-value">312%</div>
+                    <div class="preview-label">Avg ROI ✅</div>
+                </div>
+            </div>
+            <div class="preview-insight">
+                <strong>🤖 Adlytix AI Analysis</strong>
+                Your campaigns are performing well overall with a 4.1x ROAS —
+                above the 3x target. Your best campaign is "Summer Sale" at 4.2x ROAS.
+                Consider pausing "Brand Awareness" — its 1.3x ROAS means you're
+                barely breaking even. Reallocate that budget to your top performer.
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ── PROBLEM ──────────────────────────────────────────────────────────── -->
+<section id="problem">
+    <div class="container">
+        <div class="badge" style="color:#fc5c65; background:rgba(252,92,101,0.15);">
+            😤 The Problem
+        </div>
+        <h2 class="section-title">
+            You're Spending Money on Ads.<br>
+            But Are They Actually Working?
+        </h2>
+        <p class="section-subtitle">
+            Most business owners export their ad data every week
+            and still have no idea what to do with it.
+        </p>
+
+        <div class="problem-grid">
+            <div class="problem-card">
+                <div class="problem-icon">📊</div>
+                <h3>Drowning in Raw Numbers</h3>
+                <p>Impressions, clicks, CPM, CPC, ROAS — the dashboards
+                   show everything but explain nothing. You export the data
+                   and stare at a spreadsheet that tells you nothing useful.</p>
+            </div>
+            <div class="problem-card">
+                <div class="problem-icon">💸</div>
+                <h3>Can't Tell What's Wasting Money</h3>
+                <p>Without proper analysis, you keep running campaigns that
+                   lose money while cutting ones that actually work. Bad data
+                   reading = bad decisions = wasted budget.</p>
+            </div>
+            <div class="problem-card">
+                <div class="problem-icon">🧑‍💼</div>
+                <h3>Can't Afford a Data Analyst</h3>
+                <p>Hiring an analyst costs $3,000–$8,000/month. Tools like
+                   Tableau or Looker are complex and expensive. You're stuck
+                   making gut-feel decisions with real money.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ── SOLUTION ─────────────────────────────────────────────────────────── -->
+<section id="solution">
+    <div class="container">
+        <div class="badge">✨ The Solution</div>
+        <h2 class="section-title" style="color: var(--dark);">
+            From Raw Data to Clear Answers<br>in 3 Simple Steps
+        </h2>
+        <p class="section-subtitle">
+            No training needed. No complex setup.
+            Just upload and understand.
+        </p>
+
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-icon">📁</div>
+                <div class="step-number">1</div>
+                <h3>Upload Your File</h3>
+                <p>Export your ad data as CSV or Excel from Google Ads,
+                   Meta, TikTok, or any platform. Drop it in Adlytix AI.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-icon">⚡</div>
+                <div class="step-number">2</div>
+                <h3>Get Instant Metrics</h3>
+                <p>We automatically calculate ROI, ROAS, CPC, and CTR
+                   for every campaign. Color-coded so you know immediately
+                   what's good and what's not.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-icon">🤖</div>
+                <div class="step-number">3</div>
+                <h3>Read AI Insights</h3>
+                <p>Claude AI analyzes your results and writes a plain-English
+                   summary telling you exactly what to do next. No jargon.
+                   Just clear, actionable advice.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ── FEATURES ─────────────────────────────────────────────────────────── -->
+<section id="features">
+    <div class="container">
+        <div class="badge">🛠️ Features</div>
+        <h2 class="section-title" style="color: var(--dark);">
+            Everything You Need.<br>Nothing You Don't.
+        </h2>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">📐</div>
+                <h3>Auto Metric Calculator</h3>
+                <p>Instantly calculates ROI, ROAS, CPC, and CTR from your
+                   raw data. Works even if your columns have different names —
+                   we auto-detect them.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI-Powered Insights</h3>
+                <p>Powered by Claude AI. Get a plain-English analysis of your
+                   campaign performance with specific recommendations tailored
+                   to your actual numbers.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Interactive Charts</h3>
+                <p>Four visual charts — ROAS comparison, Spend vs Revenue,
+                   CTR breakdown, CPC analysis. Hover to explore. Instantly
+                   see which campaigns win and which lose.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h3>Best & Worst Detection</h3>
+                <p>Automatically highlights your best-performing campaign
+                   (increase budget) and your worst (pause or fix).
+                   No guesswork needed.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📁</div>
+                <h3>Works With Any Export</h3>
+                <p>Google Ads, Meta Ads, TikTok Ads, LinkedIn, or any
+                   platform. If it exports to CSV or Excel, Adlytix AI
+                   can analyze it.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Private & Secure</h3>
+                <p>Your data is never stored. It's processed in memory
+                   during your session only and deleted immediately after.
+                   Your client data stays yours.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ── SOCIAL PROOF ─────────────────────────────────────────────────────── -->
+<section id="proof">
+    <div class="container">
+        <div class="badge"
+             style="background:rgba(255,255,255,0.2); color:white;">
+            💬 Early Users Love It
+        </div>
+        <h2 class="section-title">Built for Marketers Who Mean Business</h2>
+
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-value">10s</div>
+                <div class="stat-label">Average time to first insight</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">4</div>
+                <div class="stat-label">Key metrics calculated instantly</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">$0</div>
+                <div class="stat-label">Cost during beta</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">No setup required</div>
+            </div>
+        </div>
+
+        <div class="testimonial-grid">
+            <div class="testimonial">
+                <p class="testimonial-text">
+                    "I used to spend 2 hours every Monday making sense of
+                    my ad exports. Now I upload the file, read the AI summary,
+                    and I'm done in under a minute. Game changer."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">👨‍💼</div>
+                    <div>
+                        <div class="author-name">James R.</div>
+                        <div class="author-title">
+                            E-commerce Store Owner
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <p class="testimonial-text">
+                    "My clients always asked me 'is our ROAS good?'
+                    and I'd have to explain it every time. Now I just
+                    run their data through Adlytix AI and send them
+                    the insight summary. Saves me 3 hours a week."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">👩‍💻</div>
+                    <div>
+                        <div class="author-name">Sarah M.</div>
+                        <div class="author-title">
+                            Freelance Digital Marketer
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <p class="testimonial-text">
+                    "We manage ads for 12 clients. Before Adlytix AI,
+                    weekly reporting took our team half a day. Now it's
+                    done before the morning standup. Incredible tool."
+                </p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">🧑‍🤝‍🧑</div>
+                    <div>
+                        <div class="author-name">Ahmed K.</div>
+                        <div class="author-title">
+                            Marketing Agency Founder
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ── FINAL CTA ─────────────────────────────────────────────────────────── -->
+<section id="cta">
+    <div class="container">
+        <div class="cta-box">
+            <div class="badge">🎯 Get Started Now</div>
+            <h2 class="section-title" style="color: var(--dark);">
+                Ready to Finally Understand<br>Your Ad Performance?
+            </h2>
+            <p class="cta-subtitle">
+                Upload your first file in the next 60 seconds.
+                No account. No credit card. No setup.
+                Just answers.
+            </p>
+            <a href="https://adlytix-ai.streamlit.app"
+               target="_blank"
+               class="btn btn-primary"
+               style="font-size:1.1rem; padding:16px 40px;">
+                📊 Analyze My Ads Free →
+            </a>
+            <div class="cta-features">
+                <div class="cta-feature">
+                    <span>✅</span> Free during beta
+                </div>
+                <div class="cta-feature">
+                    <span>✅</span> No signup needed
+                </div>
+                <div class="cta-feature">
+                    <span>✅</span> Works instantly
+                </div>
+                <div class="cta-feature">
+                    <span>✅</span> Data never stored
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ── FOOTER ────────────────────────────────────────────────────────────── -->
+<footer>
+    <div class="container">
+        <div class="footer-brand">📊 Adlytix AI</div>
+        <p style="margin-bottom:16px;">
+            Turn ad data into instant clarity.
+        </p>
+        <p>
+            <a href="https://adlytix-ai.streamlit.app" target="_blank">
+                Launch App
+            </a>
+            &nbsp;·&nbsp;
+            <a href="mailto:your@email.com">Contact</a>
+            &nbsp;·&nbsp;
+            <a href="https://github.com/sultanalikhan7543/adlytix-ai"
+               target="_blank">
+                GitHub
+            </a>
+        </p>
+        <p style="margin-top:20px; font-size:0.8rem; color:rgba(255,255,255,0.3);">
+            © 2026 Adlytix AI · Built with Python, Streamlit & Claude AI
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>

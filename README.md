@@ -45,4 +45,4 @@ Add your `ANTHROPIC_API_KEY` to a `.env` file.
 
 ## 📬 Contact
 
-Built by [Your Name] · [your@email.com]
+Built by Sultan Ali Khan · sultanalikhan0344@gmail.com

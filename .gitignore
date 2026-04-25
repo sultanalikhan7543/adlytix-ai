@@ -1,0 +1,15 @@
+# Secret keys — NEVER upload these
+.env
+
+# Python virtual environment — too large to upload
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Streamlit local config
+.streamlit/secrets.toml

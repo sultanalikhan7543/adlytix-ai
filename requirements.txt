@@ -1,0 +1,7 @@
+streamlit
+pandas
+openpyxl
+plotly
+anthropic
+fpdf2
+python-dotenv
